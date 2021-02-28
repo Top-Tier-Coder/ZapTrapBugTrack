@@ -120,10 +120,10 @@ public static class DataUtility
         //Seed Default Admin User
         var defaultUser = new BTUser
         {
-            UserName = "araynor@coderfoundry.com",
-            Email = "araynor@coderfoundry.com",
-            FirstName = "Antonio",
-            LastName = "Raynor",
+            UserName = "m.daniel.omalley@gmail.com",
+            Email = "m.daniel.omalley@gmail.com",
+            FirstName = "Dan",
+            LastName = "O'Malley",
             EmailConfirmed = true,
             CompanyId = company3Id
         };
@@ -132,7 +132,7 @@ public static class DataUtility
             var user = await userManager.FindByEmailAsync(defaultUser.Email);
             if (user == null)
             {
-                await userManager.CreateAsync(defaultUser, "Abc&123!");
+                await userManager.CreateAsync(defaultUser, "Gruber1!");
                 await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
             }
         }
