@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,47 @@ namespace ZapTrapBugTrack.Controllers
 
         public IActionResult Index()
         {
+            var Critical = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Critical").Id)).ToList().Count;
+            var Urgent = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Urgent").Id)).ToList().Count;
+            var High = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "High").Id)).ToList().Count;
+            var Medium = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id)).ToList().Count;
+            var Low = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Low").Id)).ToList().Count;
+            var Hold = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Hold").Id)).ToList().Count;
+
+
+            ViewData["Critical"] = Critical;
+            ViewData["Urgent"] = Urgent;
+            ViewData["High"] = High;
+            ViewData["Medium"] = Medium;
+            ViewData["Low"] = Low;
+            ViewData["Hold"] = Hold;
+
+
+
             return View();
+        }
+
+        public IActionResult Dashboard()
+        {
+            DashboardViewModel model = new DashboardViewModel();
+
+
+            var tickets = _context.Tickets
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketPriority)
+                .ToList();
+
+            var projects = _context.Projects
+                .Include(p => p.Company)
+                .Include(p => p.Members)
+                .ToList();
+
+
+            model.Tickets = tickets;
+            model.Projects = projects;
+
+            return View(model);
+
         }
 
         public IActionResult Privacy()

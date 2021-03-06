@@ -1,5 +1,7 @@
 ﻿@* AdminLTE-3.1.0-rc *@
+@using ZapTrapBugTrack.Services
 @using Microsoft.AspNetCore.Identity
+@inject IBTNotificationService notificationService
 @inject UserManager<BTUser> UserManager
 @inject SignInManager<BTUser> SignInManager
 
@@ -40,14 +42,25 @@
     <!-- summernote -->
     <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.min.css">
 
+    <!--Datatable & Plugins-->
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
     <!-- Basic Plugins -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     <link rel="stylesheet" href="~/css/site.css" />
 
+    <script src="//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"></script>
+
+
+    @await RenderSectionAsync("Content", required: false)
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" style="margin-bottom:0;">
 
 
     @if (SignInManager.IsSignedIn(User))
@@ -63,17 +76,17 @@
                     <a asp-controller="Home" asp-action="index" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://danomalley.netlify.app/" target="_blank"><span class="iconify" data-icon="dashicons:portfolio" data-inline="true"></span> My Portfolio</a>
+                    <a class="nav-link" href="https://danomalley.netlify.app/" target="_blank"><span class="iconify" data-icon="dashicons:portfolio" data-inline="true"></span>Portfolio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://www.linkedin.com/feed/" target="_blank"><span class="iconify" data-icon="bi:linkedin" data-inline="true"></span> Linkedin</a>
+                    <a class="nav-link" href="https://www.linkedin.com/feed/" target="_blank"><span class="iconify" data-icon="bi:linkedin" data-inline="true"></span>Linkedin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://github.com/top-tier-coder" target="_blank"><span class="iconify" data-icon="akar-icons:github-fill" data-inline="true"></span> Github</a>
+                    <a class="nav-link" href="https://github.com/top-tier-coder" target="_blank"><span class="iconify" data-icon="akar-icons:github-fill" data-inline="true"></span>Github</a>
                 </li>
                 @*<li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Contact</a>
-        </li>*@
+                        <a href="#" class="nav-link">Contact</a>
+                    </li>*@
             </ul>
 
             <!-- SEARCH FORM -->
@@ -90,132 +103,57 @@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Messages Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Brad Diesel
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">I got your message bro</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                    </div>
-                </li>
-                <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
+                        <span class="badge badge-warning navbar-badge">@((await notificationService.GetUnreadNotificationsAsync(User)).Count())</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        <span class="dropdown-item dropdown-header">@((await notificationService.GetUnreadNotificationsAsync(User)).Count()) Notifications</span>
+                        @foreach (var notification in (await notificationService.GetUnreadNotificationsAsync(User)))
+                        {
+                            <div class="dropdown-divider"></div>
+                            <a href="javascripty:void(0)" class="dropdown-item">
+                                <p class="text-sm">@notification.Description</p>
+                                <p class="text-sm">@notification.Sender.FullName</p>
+                                <span class="float-right text-muted text-sm">@notification.Created.ToString("MM/dd HH:mm")</span>
+                            </a>
+                            <a asp-controller="Tickets" asp-action="GoToTicket" asp-route-id="@notification.Id" class="btn-info btn-sm btn-success">Go to Tickets</a>
+                        }
+
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
-                </li>
             </ul>
-            <ul class="navbar-nav">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-                    </li>
-                    <li class="nav-item">
-                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                        </form>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                    </li>
-                }
-            </ul>
-        </nav>
+                <ul class="navbar-nav">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name!</a>
+                        </li>
+                        <li class="nav-item">
+                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        </li>
+                    }
+                </ul>
+</nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
-                <img src="~/img/apple-touch-icon.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-                <span class="brand-text font-weight-light">ZAP TRAP</span>
+                <img src="~/img/Zap-Trap-Graphic.png" class="brand-image d-flex img-rounded elevation-3">
+                <span class="brand-text font-weight-light"></span>
             </a>
 
             <!-- Sidebar -->
@@ -304,10 +242,21 @@
                 </main>
             </div>
         </div>
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2021 <a href="https://danomalley.netlify.app/" target="_blank">Dan O'Malley</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Zap-Trap | Bug-Tracker</b>
+            </div>
+        </footer>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
     }
     else
     {
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     }
@@ -315,18 +264,8 @@
 
 
 
-    <footer class="main-footer">
-        <strong>Copyright &copy; 2021 <a href="https://danomalley.netlify.app/" target="_blank">Dan O'Malley</a>.</strong>
-        All rights reserved.
-        <div class="float-right d-none d-sm-inline-block">
-            <b>Zap-Trap | Bug-Tracker</b>
-        </div>
-    </footer>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
+
     <!-- /.control-sidebar -->
     <!-- ./wrapper -->
     <!-- jQuery -->
@@ -363,7 +302,6 @@
     <script src="~/js/demo.js"></script> <!--Added-->
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="~/js/pages/dashboard.js"></script> <!--Added-->
-
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
@@ -377,33 +315,22 @@
     <!-- Page specific script -->
 
 
+
     <script>
-        $(function () {
-            /* ChartJS
-             * -------
-             * Here we will create a few charts using ChartJS
-             */
-
-           
-
-            //-------------
-            //- DONUT CHART -
-            //-------------
+        // Charts is the Controller name, TypeChart is the action
+        var Url1 = '@Url.Action("TypeChart", "Charts")'; // represent the endpoint
+        var Url2 = '@Url.Action("PriorityChart", "Charts")'; // represent the endpoint
+        var Url3 = '@Url.Action("StatusChart", "Charts")'; // represent the endpoint
+        //Step 2 - start the structure for our AJAX call
+        $.post(Url1).then(function (response) {
             // Get context with jQuery - using jQuery's .get() method.
-            var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+            var typeChartCanvas = $('#TicketTypeChart').get(0).getContext('2d')
             var donutData = {
-                labels: [
-                    'Chrome',
-                    'IE',
-                    'FireFox',
-                    'Safari',
-                    'Opera',
-                    'Navigator',
-                ],
+                labels: response.labels,
                 datasets: [
                     {
-                        data: [700, 500, 400, 600, 300, 100],
-                        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+                        data: response.data,
+                        backgroundColor: response.backgroundColors,
                     }
                 ]
             }
@@ -411,32 +338,23 @@
                 maintainAspectRatio: false,
                 responsive: true,
             }
-            //Create pie or doughnut chart
+            //Create pie or douhnut chart
             // You can switch between pie and douhnut using the method below.
-            var donutChart = new Chart(donutChartCanvas, {
+            var donutChart = new Chart(typeChartCanvas, {
                 type: 'doughnut',
                 data: donutData,
                 options: donutOptions
             })
-
-            //-------------
-            //- DONUT CHART 2 -
-            //-------------
+        });
+        $.post(Url2).then(function (response) {
             // Get context with jQuery - using jQuery's .get() method.
-            var donutChartCanvas = $('#donutChart2').get(0).getContext('2d')
+            var priorityChartCanvas = $('#TicketPriorityChart').get(0).getContext('2d')
             var donutData = {
-                labels: [
-                    'Chrome',
-                    'IE',
-                    'FireFox',
-                    'Safari',
-                    'Opera',
-                    'Navigator',
-                ],
+                labels: response.labels,
                 datasets: [
                     {
-                        data: [700, 500, 400, 600, 300, 100],
-                        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+                        data: response.data,
+                        backgroundColor: response.backgroundColors,
                     }
                 ]
             }
@@ -444,32 +362,23 @@
                 maintainAspectRatio: false,
                 responsive: true,
             }
-            //Create pie or doughnut chart
+            //Create pie or douhnut chart
             // You can switch between pie and douhnut using the method below.
-            var donutChart = new Chart(donutChartCanvas, {
+            var donutChart = new Chart(priorityChartCanvas, {
                 type: 'doughnut',
                 data: donutData,
                 options: donutOptions
             })
-
-            //-------------
-            //- DONUT CHART 3 -
-            //-------------
+        });
+        $.post(Url3).then(function (response) {
             // Get context with jQuery - using jQuery's .get() method.
-            var donutChartCanvas = $('#donutChart3').get(0).getContext('2d')
+            var statusChartCanvas = $('#TicketStatusChart').get(0).getContext('2d')
             var donutData = {
-                labels: [
-                    'Chrome',
-                    'IE',
-                    'FireFox',
-                    'Safari',
-                    'Opera',
-                    'Navigator',
-                ],
+                labels: response.labels,
                 datasets: [
                     {
-                        data: [700, 500, 400, 600, 300, 100],
-                        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+                        data: response.data,
+                        backgroundColor: response.backgroundColors,
                     }
                 ]
             }
@@ -477,26 +386,55 @@
                 maintainAspectRatio: false,
                 responsive: true,
             }
-            //Create pie or doughnut chart
+            //Create pie or douhnut chart
             // You can switch between pie and douhnut using the method below.
-            var donutChart = new Chart(donutChartCanvas, {
+            var donutChart = new Chart(statusChartCanvas, {
                 type: 'doughnut',
                 data: donutData,
                 options: donutOptions
             })
-            
+        });
 
- 
 
-         
-        })
+
     </script>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- DataTables  & Plugins -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+
+    <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+    <script src="~/plugins/jszip/jszip.min.js"></script>
+
+    <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+
+    <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+
+    <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+
+    <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+
+    <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
 

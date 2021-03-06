@@ -16,20 +16,99 @@ namespace ZapTrapBugTrack.Models
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTHistoryService _historyService;
+        private readonly IBTProjectService _projectService;
 
-        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService)
+        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTHistoryService historyService, IBTProjectService projectService)
+            
         {
             _context = context;
             _userManager = userManager;
             _historyService = historyService;
+            _projectService = projectService;
         }
 
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.DeveloperUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            var applicationDbContext = _context.Tickets
+                .Include(t => t.DeveloperUser)
+                .Include(t => t.OwnerUser)
+                .Include(t => t.Project)
+                .Include(t => t.TicketPriority)
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketType);
             return View(await applicationDbContext.ToListAsync());
+
         }
+
+        public async Task<IActionResult> GoToTicket(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var notification = await _context.Notifications.FindAsync((int)id);
+            
+            if (notification == null)
+            {
+                return NotFound();
+            }
+
+            notification.Viewed = true;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = notification.TicketId });
+
+
+        }
+
+        
+
+        //GET: TICKETS
+
+        public async Task<IActionResult> MyTickets()
+        {
+
+            var model = new List<Ticket>();
+            //test if admin
+            if (User.IsInRole("Admin")) 
+            {
+                model =  await _context.Tickets
+                .Include(t => t.DeveloperUser)
+                .Include(t => t.OwnerUser)
+                .Include(t => t.Project)
+                .Include(t => t.TicketPriority)
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketType).ToListAsync();
+
+            }  //test if project manager
+            else if (User.IsInRole("ProjectManager")) 
+            {
+                var userId = _userManager.GetUserId(User);
+                var projects = await _projectService.ListUserProjectsAsync(userId);
+
+
+                model = projects.SelectMany(p => p.Tickets).ToList();
+
+            } //test if dev
+            else if (User.IsInRole("Developer")) 
+            {
+                var userId = _userManager.GetUserId(User);
+                model = _context.Tickets.Where(t => t.DeveloperUserId == userId).ToList();
+
+            }//test if owner
+            else 
+            {
+                var userId = _userManager.GetUserId(User);
+                model = _context.Tickets.Where(t => t.OwnerUserId == userId).ToList();
+
+            }
+
+            return View(model);
+
+        }
+
 
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -64,12 +143,12 @@ namespace ZapTrapBugTrack.Models
         // GET: Tickets/Create
         public IActionResult Create()
         {
-            ViewData["DeveloperUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id");
-            ViewData["OwnerUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id");
+            ViewData["DeveloperUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "FullName");
+            ViewData["OwnerUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "FullName");
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name");
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id");
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id");
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id");
+            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name");
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Name");
+            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name");
             return View();
         }
 
@@ -82,6 +161,9 @@ namespace ZapTrapBugTrack.Models
         {
             if (ModelState.IsValid)
             {
+                ticket.Updated = DateTime.Now;
+                ticket.Created = DateTime.Now;
+
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -108,12 +190,12 @@ namespace ZapTrapBugTrack.Models
             {
                 return NotFound();
             }
-            ViewData["DeveloperUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id", ticket.DeveloperUserId);
-            ViewData["OwnerUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id", ticket.OwnerUserId);
+            ViewData["DeveloperUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "FullName", ticket.DeveloperUserId);
+            ViewData["OwnerUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "FullName", ticket.OwnerUserId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", ticket.ProjectId);
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
+            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", ticket.TicketTypeId);
             return View(ticket);
         }
 
@@ -124,6 +206,8 @@ namespace ZapTrapBugTrack.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,DeveloperUserId")] Ticket ticket)
         {
+           
+
             if (id != ticket.Id)
             {
                 return NotFound();
@@ -142,6 +226,8 @@ namespace ZapTrapBugTrack.Models
             {
                 try
                 {
+                    ticket.Updated = DateTime.Now;
+
                     _context.Update(ticket);
                     await _context.SaveChangesAsync();
 
@@ -175,12 +261,12 @@ namespace ZapTrapBugTrack.Models
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DeveloperUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id", ticket.DeveloperUserId);
-            ViewData["OwnerUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id", ticket.OwnerUserId);
+            ViewData["DeveloperUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "FullName", ticket.DeveloperUserId);
+            ViewData["OwnerUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "FullName", ticket.OwnerUserId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", ticket.ProjectId);
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
+            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
+            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Name", ticket.TicketStatusId);
+            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name", ticket.TicketTypeId);
             return View(ticket);
         }
 

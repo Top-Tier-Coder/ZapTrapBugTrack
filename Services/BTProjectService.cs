@@ -72,7 +72,7 @@ namespace ZapTrapBugTrack.Services
             return flag;
         }
 
-        public async Task<IEnumerable<Project>> ListUserProjectsAsync(string userId)
+        public async Task<ICollection<Project>> ListUserProjectsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (await _roleService.IsUserInRoleAsync(user, Roles.Admin.ToString()))
@@ -81,7 +81,14 @@ namespace ZapTrapBugTrack.Services
             }
             //What if the user is an Admin?
             var output = new List<Project>();
-            foreach (var project in await _context.Projects.ToListAsync())
+            foreach (var project in await _context.Projects
+                .Include(t =>t.Tickets)
+                .ThenInclude(t =>t.TicketPriority)
+                .Include(t => t.Tickets)
+                .ThenInclude(t => t.TicketStatus)
+                .Include(t => t.Tickets)
+                .ThenInclude(t => t.TicketType)
+                .ToListAsync())
             {
                 if(await IsUserOnProjectAsync(userId, project.Id))
                 {
@@ -126,7 +133,7 @@ namespace ZapTrapBugTrack.Services
             }
         }
 
-        public async Task<IEnumerable<BTUser>> DevelopersOnProjectAsync(int projectId)
+        public async Task<ICollection<BTUser>> DevelopersOnProjectAsync(int projectId)
         {
             var developers = await _userManager.GetUsersInRoleAsync(Roles.Developer.ToString());
             var onProject = await UsersOnProjectAsync(projectId);
@@ -134,7 +141,7 @@ namespace ZapTrapBugTrack.Services
             return devsOnProject.ToList();
         }
 
-        public async Task<IEnumerable<BTUser>> SubmittersOnProjectAsync(int projectId)
+        public async Task<ICollection<BTUser>> SubmittersOnProjectAsync(int projectId)
         {
             var submitters = await _userManager.GetUsersInRoleAsync(Roles.Submitter.ToString());
             var onProject = await UsersOnProjectAsync(projectId);
@@ -142,7 +149,7 @@ namespace ZapTrapBugTrack.Services
             return subsOnProject.ToList();
         }
 
-        public async Task<IEnumerable<BTUser>> UsersNotOnProjectAsync(int projectId)
+        public async Task<ICollection<BTUser>> UsersNotOnProjectAsync(int projectId)
         {
             var output = new List<BTUser>();
             foreach (var user in await _context.Users.ToListAsync())
@@ -156,7 +163,7 @@ namespace ZapTrapBugTrack.Services
             return output;
         }
 
-        public async Task<IEnumerable<BTUser>> UsersOnProjectAsync(int projectId)
+        public async Task<ICollection<BTUser>> UsersOnProjectAsync(int projectId)
         {
             var output = new List<BTUser>();
             foreach (var user in await _context.Users.ToListAsync())

@@ -4,14 +4,19 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
 
 
-<div class="hold-transition register-page">
-    <div class="register-box">
+
+<div class="hold-transition register-page" style="background-image: URL('/img/Zap-Trap-Background.jpg');
+width:100%;
+background-repeat:no-repeat;
+background-attachment:fixed;
+background-size:cover;">
+     
+    <div class="register-box" style="opacity:0.9">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="../../index2.html" class="h1"><b>ZAP</b>TRAP</a>
+                <a href="../../index2.html" class="h1"><b>ZAP-TRAP</b></a>
                 <h4>Bug Tracker</h4>
             </div>
             <hr />
@@ -114,7 +119,7 @@
                     </a>
                 </div>
 
-                <a href="/Identity/Account/Login" class="text-center">I already have a membership</a>
+                <a asp-page="/Account/Login" class="text-center">I already have a membership</a>
             </div>
             <!-- /.form-box -->
         </div><!-- /.card -->
