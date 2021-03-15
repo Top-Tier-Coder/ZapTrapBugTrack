@@ -62,6 +62,7 @@ namespace ZapTrapBugTrack
             services.AddScoped<IBTFileService, BTFileService>();
 
             services.AddScoped<IBTNotificationService, BTNotificationService>();
+            services.AddScoped<IBTInviteService, BTInviteService>();
 
 
 

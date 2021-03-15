@@ -71,7 +71,7 @@ public static class DataUtility
         await SeedDefaultTicketStatusAsync(dbContextSvc);
         await SeedDefaultTicketPriorityAsync(dbContextSvc);
         await SeedDefautProjectsAsync(dbContextSvc);
-        await SeedDefautTicketsAsync(dbContextSvc);
+        await SeedDefaultTicketsAsync(dbContextSvc);
     }
 
     public static async Task SeedRolesAsync(UserManager<BTUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -665,7 +665,7 @@ public static class DataUtility
         }
     }
 
-    public static async Task SeedDefautTicketsAsync(ApplicationDbContext context)
+    public static async Task SeedDefaultTicketsAsync(ApplicationDbContext context)
     {
         //Get project Ids
         int portfolioId = context.Projects.FirstOrDefault(p => p.Name == "Build a Personal Porfolio").Id;

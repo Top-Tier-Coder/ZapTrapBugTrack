@@ -18,7 +18,7 @@ namespace ZapTrapBugTrack.Services
         public Task<ICollection<BTUser>> UsersNotOnProjectAsync(int projectId);
 
         //Assign/add users to project
-        public Task AddUserToProject(string userId, int projectId);
+        public Task AddUserToProjectAsync(string userId, int projectId);
 
         //Remove from project
         public Task RemoveUserFromProject(string userId, int projectId);

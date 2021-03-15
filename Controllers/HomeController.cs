@@ -20,7 +20,10 @@ namespace ZapTrapBugTrack.Controllers
         private readonly IBTRoleService _roleService;
         private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, IBTRoleService roleService, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> 
+            logger,
+            IBTRoleService roleService,
+            ApplicationDbContext context)
         {
             _logger = logger;
             _roleService = roleService;

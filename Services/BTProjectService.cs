@@ -32,7 +32,7 @@ namespace ZapTrapBugTrack.Services
             
         }
 
-        public async Task AddUserToProject(string userId, int projectId)
+        public async Task AddUserToProjectAsync(string userId, int projectId)
         {
             //Needs to check for Project Manager - only one allowed
             try
