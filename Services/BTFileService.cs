@@ -18,11 +18,7 @@ namespace ZapTrapBugTrack.Services
             memoryStream.Close();
             memoryStream.Dispose();
 
-
-
             return byteFile;
-
-
 
         }
 

@@ -1,6 +1,4 @@
 ﻿@model ZapTrapBugTrack.Models.DashboardViewModel
-
-
 <!-- Small boxes (Stat box) -->
 <div class="row">
     <div class="col-lg-2 col-6">
@@ -14,7 +12,7 @@
             <div class="icon">
                 <i class="fas fa-pause-circle"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a data-toggle="modal" data-target="#holdModal" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -29,7 +27,7 @@
             <div class="icon">
                 <i class="fas fa-bug"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a data-toggle="modal" data-target="#lowModal" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -44,7 +42,7 @@
             <div class="icon">
                 <i class="fas fa-bug"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a data-toggle="modal" data-target="#mediumModal" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -59,7 +57,7 @@
             <div class="icon">
                 <i class="fas fa-bug"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a data-toggle="modal" data-target="#highModal" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -74,7 +72,7 @@
             <div class="icon">
                 <i class="fas fa-bug"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a data-toggle="modal" data-target="#urgentModal" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -89,13 +87,14 @@
             <div class="icon">
                 <i class="fas fa-exclamation-circle"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a data-toggle="modal" data-target="#criticalModal" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+
         </div>
     </div>
     <!-- ./col -->
 </div>
 <!-- /.row -->
-<!-- Main content -->
+
 <section class="content">
 
     <div class="row">
@@ -103,7 +102,7 @@
 
 
             <!-- DONUT CHARTS -->
-            <div class="card card-danger">
+            <div class="card card-purple">
                 <div class="card-header">
                     <h3 class="card-title">Zap-Trap Stats</h3>
 
@@ -138,7 +137,7 @@
         </div>
     </div>
     <!-- /.row -->
-    <div class="card card-success">
+    <div class="card card-cyan">
         <div class="card-header">
             <h3 class="card-title">All Projects</h3>
             <div class="card-tools">
@@ -154,7 +153,7 @@
 
         </div>
     </div>
-    <div class="card card-primary">
+    <div class="card card-purple">
         <div class="card-header">
             <h3 class="card-title">All Tickets</h3>
             <div class="card-tools">
@@ -171,4 +170,127 @@
         </div>
 </section>
 
+@*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Modal Code>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*@
 
+
+<!-- Modal -->
+<div class="modal fade" id="criticalModal" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Critical Ticket Details</h4>
+            </div>
+            <div class="modal-body">
+
+
+
+            </div>
+            <!--end modal body-->
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="urgentModal" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Critical Ticket Details</h4>
+            </div>
+            <div class="modal-body">
+
+
+
+            </div>
+            <!--end modal body-->
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="highModal" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Critical Ticket Details</h4>
+            </div>
+            <div class="modal-body">
+
+
+
+            </div>
+            <!--end modal body-->
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="mediumModal" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Critical Ticket Details</h4>
+            </div>
+            <div class="modal-body">
+
+
+
+            </div>
+            <!--end modal body-->
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="lowModal" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Critical Ticket Details</h4>
+            </div>
+            <div class="modal-body">
+
+
+
+            </div>
+            <!--end modal body-->
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="holdModal" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Critical Ticket Details</h4>
+            </div>
+            <div class="modal-body">
+
+
+
+            </div>
+            <!--end modal body-->
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>

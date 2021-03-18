@@ -38,10 +38,36 @@ namespace ZapTrapBugTrack.Controllers
             var priorities = _context.TicketPriorities.ToList();
             var criticalTicket = _context.TicketPriorities.ToList();
             int count = 0;
+            
             foreach (var priority in priorities)
             {
                 result.Labels.Add(priority.Name);
                 result.Data.Add(_context.Tickets.Where(t => t.TicketPriorityId == priority.Id).Count());
+
+                switch(priority.Name)
+                {
+                    case "Critical":
+                        result.BackgroundColors.Add("#FF4500");
+                        break;
+                    case "Urgent":
+                        result.BackgroundColors.Add("#FFD700");
+                        break;
+                    case "High":
+                        result.BackgroundColors.Add("#FFD700");
+                        break;
+                    case "Medium":
+                        result.BackgroundColors.Add("#32CD32");
+                        break;
+                    case "Low":
+                        result.BackgroundColors.Add("#00CED1");
+                        break;
+                    case "Hold":
+                        result.BackgroundColors.Add("#0000FF");
+                        break;
+                    default:
+                        break;
+
+                }
                 if (count < 10)
                 {
                     result.BackgroundColors.Add(_backgroundColors[count]);

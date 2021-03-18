@@ -5,44 +5,47 @@
 }
 
 
-<div class="container-fluid"
-   <div class="row">
-<!-- left column -->
+<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
         <div class="col-md-6">
-<!-- general form elements -->
+            <!-- general form elements -->
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Create New Company</h3>
                 </div>
-<!-- /.card-header -->
-<!-- form start -->
+                <!-- /.card-header -->
+                <!-- form start -->
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                     <div class="card-body">
+                    <div class="card-body">
                         <div class="form-group">
-                             <label asp-for="Name">Company Name</label>
-                             <input asp-for="Name" class="form-control" placeholder="Name of Company">
-                             <span asp-validation-for="Name" class="text-danger"></span>
+                            <label asp-for="Name">Company Name</label>
+                            <input asp-for="Name" class="form-control" placeholder="Name of Company">
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Description">Company Description</label>
                             <input asp-for="Description" class="form-control" placeholder="Description of Company">
                             <span asp-validation-for="Description" class="text-danger"></span>
-                         </div>
-<!-- /.card-body -->
-                        <div class="card-footer text-center">
-                        <button type="submit" value="Create" class="btn btn-primary">Create New Company</button>
-                        <br />
-                        <div>
-                            <a asp-action="Index">Back to List</a>
                         </div>
-                      </div>
-                   </div>
-            </form>
-     </div>
-</div>
-<!-- /.card -->
+                        <!-- /.card-body -->
+                        <div class="card-footer text-center">
+                            <button type="submit" value="Create" class="btn btn-primary">Create New Company</button>
+                            <br />
+                            <div>
+                                <a asp-action="Index">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.card -->
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+
+      
