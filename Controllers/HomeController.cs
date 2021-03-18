@@ -30,7 +30,7 @@ namespace ZapTrapBugTrack.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string filter)
         {
             var Critical = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Critical").Id)).ToList().Count;
             var Urgent = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Urgent").Id)).ToList().Count;
@@ -39,6 +39,48 @@ namespace ZapTrapBugTrack.Controllers
             var Low = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Low").Id)).ToList().Count;
             var Hold = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Hold").Id)).ToList().Count;
 
+            var listCritical = _context.Tickets.Include(p => p.Project)
+                .Include(y => y.TicketType)
+                .Include(s => s.TicketStatus)
+                .Include(o => o.OwnerUser)
+                .Include(d => d.DeveloperUser)
+                .Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Critical").Id)).ToList();
+            var listUrgent = _context.Tickets
+                .Include(p => p.Project)
+                .Include(y => y.TicketType)
+                .Include(s => s.TicketStatus)
+                .Include(o => o.OwnerUser)
+                .Include(d => d.DeveloperUser)
+                .Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Urgent").Id)).ToList();
+            var listHigh = _context.Tickets
+                .Include(p => p.Project)
+                .Include(y => y.TicketType)
+                .Include(s => s.TicketStatus)
+                .Include(o => o.OwnerUser)
+                .Include(d => d.DeveloperUser)
+                .Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "High").Id)).ToList();
+            var listMedium = _context.Tickets
+                .Include(p => p.Project)
+                .Include(y => y.TicketType)
+                .Include(s => s.TicketStatus)
+                .Include(o => o.OwnerUser)
+                .Include(d => d.DeveloperUser)
+                .Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Medium").Id)).ToList();
+            var listLow = _context.Tickets
+                .Include(p => p.Project)
+                .Include(y => y.TicketType)
+                .Include(s => s.TicketStatus)
+                .Include(o => o.OwnerUser)
+                .Include(d => d.DeveloperUser)
+                .Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Low").Id)).ToList();
+            var listHold = _context.Tickets
+                .Include(p => p.Project)
+                .Include(y => y.TicketType)
+                .Include(s => s.TicketStatus)
+                .Include(o => o.OwnerUser)
+                .Include(d => d.DeveloperUser)
+                .Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Hold").Id)).ToList();
+
 
             ViewData["Critical"] = Critical;
             ViewData["Urgent"] = Urgent;
@@ -46,6 +88,13 @@ namespace ZapTrapBugTrack.Controllers
             ViewData["Medium"] = Medium;
             ViewData["Low"] = Low;
             ViewData["Hold"] = Hold;
+
+            ViewData["ListCritical"] = listCritical;
+            ViewData["ListUrgent"] = listUrgent;
+            ViewData["ListHigh"] = listHigh;
+            ViewData["ListMedium"] = listMedium;
+            ViewData["ListLow"] = listLow;
+            ViewData["ListHold"] = listHold;
 
 
 
