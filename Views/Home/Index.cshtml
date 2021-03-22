@@ -318,7 +318,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <label>Created By:</label> @ticket.OwnerUser.FullName <br />
+                                        @if (ticket.OwnerUser is not null)
+                                        {
+                                            <label>Created By:</label> @ticket.OwnerUser.FullName <br />
+                                        }
                                     </div>
                                     <div class="col-6">
                                         <label>Developer</label> @devName <i class="fa fa-arrow-circle-right"></i>
