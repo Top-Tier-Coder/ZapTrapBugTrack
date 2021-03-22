@@ -75,6 +75,7 @@ namespace ZapTrapBugTrack.Models
         [Display(Name = "Developer Name")]
         public BTUser DeveloperUser { get; set; }
 
+
         public virtual ICollection<TicketComment> Comments { get; set; }
         public virtual ICollection<TicketAttachment> Attachments { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }

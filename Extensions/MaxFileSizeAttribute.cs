@@ -10,13 +10,14 @@ namespace ZapTrapBugTrack.Extensions
     public class MaxFileSizeAttribute : ValidationAttribute
     {
         private readonly int _maxFileSize;
-
         public MaxFileSizeAttribute(int maxFileSize)
         {
             _maxFileSize = maxFileSize;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+
+        protected override ValidationResult IsValid(
+        object value, ValidationContext validationContext)
         {
             var file = value as IFormFile;
             if (file != null)
@@ -27,12 +28,14 @@ namespace ZapTrapBugTrack.Extensions
                 }
             }
 
+
             return ValidationResult.Success;
         }
 
+
         public string GetErrorMessage()
         {
-            return $"Maximum file size is {_maxFileSize} bytes";
+            return $"Maximum allowed file size is { _maxFileSize} bytes.";
         }
     }
 }

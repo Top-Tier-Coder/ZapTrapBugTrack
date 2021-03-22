@@ -153,6 +153,7 @@ namespace ZapTrapBugTrack.Models
                 
 
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (ticket == null)
             {
                 return NotFound();

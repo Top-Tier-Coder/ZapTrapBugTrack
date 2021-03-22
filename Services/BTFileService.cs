@@ -18,29 +18,33 @@ namespace ZapTrapBugTrack.Services
             memoryStream.Close();
             memoryStream.Dispose();
 
+
             return byteFile;
 
-        }
 
+        }
 
 
         public string ConvertByteArrayToFile(byte[] fileData, string extension)
         {
+            if (fileData == null)
+            {
+                return string.Format("");
+            };
+           
             string imageBase64Data = Convert.ToBase64String(fileData);
             return string.Format($"data:image/{extension};base64,{imageBase64Data}");
 
 
-
         }
-
 
 
         public string GetFileIcon(string file)
         {
+           
             string ext = Path.GetExtension(file).Replace(".", "");
             return $"/img/png/{ext}.png";
         }
-
 
 
         public string FormatFileSize(long bytes)

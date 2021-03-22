@@ -41,6 +41,7 @@
 
     <!-- summernote -->
     <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.min.css">
+    @*<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />*@
 
     <!--Datatable & Plugins-->
     <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -48,6 +49,10 @@
     <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
     <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+    <!-- jsGrid -->
+    <link rel="stylesheet" href="~/plugins/jsgrid/jsgrid.min.css">
+    <link rel="stylesheet" href="~/plugins/jsgrid/jsgrid-theme.min.css">
 
     <!-- Basic Plugins -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -124,29 +129,29 @@
                     </div>
                 </li>
             </ul>
-                <ul class="navbar-nav">
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name!</a>
-                        </li>
-                        <li class="nav-item">
-                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                            </form>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                        </li>
-                    }
-                </ul>
-</nav>
+            <ul class="navbar-nav">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name!</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    </li>
+                }
+            </ul>
+        </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -270,48 +275,55 @@
     <!-- ./wrapper -->
     <!-- jQuery -->
     <script src="~/js/jquery.min.js"></script> <!--Added-->
+
     <!-- jQuery UI 1.11.4 -->
     <script src="~/js/jquery-ui.min.js"></script> <!--Added-->
+
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
+    <!-- jsGrid -->
+    <script src="~/plugins/jsgrid/demos/db.js"></script>
+
+    <script src="~/plugins/jsgrid/jsgrid.min.js"></script>
+
     <!-- Bootstrap 4 -->
     <script src="~/js/bootstrap.bundle.min.js"></script> <!--Added-->
+
     <!-- ChartJS -->
     <script src="~/js/Chart.min.js"></script> <!--Added-->
+
     <!-- Sparkline -->
     <script src="~/js/sparkline.js"></script> <!--Added-->
+
     <!-- JQVMap -->
     <script src="~/js/jquery.vmap.min.js"></script> <!--Added-->
     <script src="~/js/jquery.vmap.usa.js"></script> <!--Added-->
+
     <!-- jQuery Knob Chart -->
     <script src="~/js/jquery.knob.min.js"></script> <!--Added-->
+
     <!-- daterangepicker -->
     <script src="~/js/moment.min.js"></script> <!--Added-->
     <script src="~/js/daterangepicker.js"></script> <!--Added-->
+
     <!-- Tempusdominus Bootstrap 4 -->
     <script src="~/js/tempusdominus-bootstrap-4.min.js"></script> <!--Added-->
+
     <!-- Summernote -->
     <script src="~/js/summernote-bs4.min.js"></script> <!--Added-->
+
     <!-- overlayScrollbars -->
     <script src="~/js/jquery.overlayScrollbars.min.js"></script> <!--Added-->
+
     <!-- AdminLTE App -->
     <script src="~/js/adminlte.js"></script> <!--Added-->
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/js/demo.js"></script> <!--Added-->
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/js/pages/dashboard.js"></script> <!--Added-->
-    <!-- jQuery -->
-    <script src="~/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="~/plugins/chart.js/Chart.min.js"></script>
+
     <!-- AdminLTE App -->
     <script src="~/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/js/demo.js"></script>
+
     <!-- Page specific script -->
 
 
@@ -401,10 +413,6 @@
 
 
 
-
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
-
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 

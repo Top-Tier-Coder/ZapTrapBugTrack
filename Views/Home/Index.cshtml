@@ -180,70 +180,146 @@
             <div class="modal-header">
                 <h4 class="modal-title">Critical Ticket Details</h4>
             </div>
-            <div class="modal-body">
-                <table class="table" id="example1">
-                    <thead>
-                        <tr>
-                            <th>
-                                Title
-                            </th>
-                            <th>
-                                Project
-                            </th>
-                            <th>
-                                TicketType
-                            </th>
-                            <th>
-                                TicketStatus
-                            </th>
-                            <th>
-                                OwnerUser
-                            </th>
-                            <th>
-                                DeveloperUser
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ViewBag.ListCritical)
-                        {
-                        <tr>
-                            <td>
-                                @item.Title
-                            </td>
-                            <td>
-                                @item.Project.Name
-                            </td>
-                            <td>
-                                @item.TicketType.Name
-                            </td>
-                            <td>
-                                @item.TicketStatus.Name
-                            </td>
-                            <td>
-                                @if (item.OwnerUser != null)
-                                {
-                                    @item.OwnerUser.FullName
-                                }
-                            </td>
-                            <td>
-                                @if (@item.DeveloperUser != null)
-                                {
-                                    @item.DeveloperUser.FullName
-                                }
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
+            <div class="modal-body bg-dark">
+                @*<table class="table" id="example1">
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Project
+                    </th>
+                    <th>
+                        TicketType
+                    </th>
+                    <th>
+                        TicketStatus
+                    </th>
+                    <th>
+                        OwnerUser
+                    </th>
+                    <th>
+                        DeveloperUser
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.ListCritical)
+                {
+                    <tr>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            @item.Project.Name
+                        </td>
+                        <td>
+                            @item.TicketType.Name
+                        </td>
+                        <td>
+                            @item.TicketStatus.Name
+                        </td>
+                        <td>
+                            @item.OwnerUser.FullName
+                        </td>
+                        <td>
+                            @if (item.DeveloperUser != null)
+                            {
+                                @item.DeveloperUser.FullName
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Go <i class="fa fa-arrow-circle-right"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+                @{int count = 0; }
+                @foreach (var ticket in ViewBag.ListCritical)
+                {
+                    var devName = "";
+                    if (ticket.DeveloperUser == null)
+                    {
+                        devName = "No Developer";
+                    }
+                    else
+                    {
+                        devName = ticket.DeveloperUser.FullName;
+                    }
+                    @if (count % 2 == 0)
+                    {
+                        <div class="row border-bottom bg-gray">
+                            <div class="col-11">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>Title:</label> @ticket.Title <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Project Name:</label> @ticket.Project.Name
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>Type:</label> @ticket.TicketType.Name <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Status:</label> @ticket.TicketStatus.Name <br />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>Created By:</label> @ticket.OwnerUser.FullName <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Developer</label> @devName <i class="fa fa-arrow-circle-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1 mt-2">
+                                <a asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-info">Go <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row border-bottom bg-light">
+                            <div class="col-11">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>Title:</label> @ticket.Title <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Project Name:</label> @ticket.Project.Name
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>Type:</label> @ticket.TicketType.Name <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Status:</label> @ticket.TicketStatus.Name <br />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>Created By:</label> @ticket.OwnerUser.FullName <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Developer</label> @devName <i class="fa fa-arrow-circle-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1 mt-2">
+                                <a asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-info">Go <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
 
-
+                    }
+                    count++; //count = count + 1
+                }
             </div>
             <!--end modal body-->
             <div class="modal-footer">
@@ -252,7 +328,7 @@
         </div>
     </div>
 </div>
-</div>
+
 
 
 <div class="modal fade" id="urgentModal" role="dialog">
@@ -305,7 +381,7 @@
                                 <td>
                                     @if (item.OwnerUser != null)
                                     {
-                                        @item.OwnerUser.FullName 
+                                        @item.OwnerUser.FullName
                                     }
 
                                 </td>
@@ -371,37 +447,37 @@
                     <tbody>
                         @foreach (var item in ViewBag.ListHigh)
                         {
-                        <tr>
-                            <td>
-                                @item.Title
-                            </td>
-                            <td>
-                                @item.Project.Name
-                            </td>
-                            <td>
-                                @item.TicketType.Name
-                            </td>
-                            <td>
-                                @item.TicketStatus.Name
-                            </td>
-                            <td>
-                                @if (item.OwnerUser != null)
-                                {
-                                    @item.OwnerUser.FullName
-                                }
-                            </td>
-                            <td>
-                                @if (@item.DeveloperUser != null)
-                                {
-                                    @item.DeveloperUser.FullName
-                                }
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.Project.Name
+                                </td>
+                                <td>
+                                    @item.TicketType.Name
+                                </td>
+                                <td>
+                                    @item.TicketStatus.Name
+                                </td>
+                                <td>
+                                    @if (item.OwnerUser != null)
+                                    {
+                                        @item.OwnerUser.FullName
+                                    }
+                                </td>
+                                <td>
+                                    @if (@item.DeveloperUser != null)
+                                    {
+                                        @item.DeveloperUser.FullName
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -451,37 +527,37 @@
                     <tbody>
                         @foreach (var item in ViewBag.ListMedium)
                         {
-                        <tr>
-                            <td>
-                                @item.Title
-                            </td>
-                            <td>
-                                @item.Project.Name
-                            </td>
-                            <td>
-                                @item.TicketType.Name
-                            </td>
-                            <td>
-                                @item.TicketStatus.Name
-                            </td>
-                            <td>
-                                @if (item.OwnerUser != null)
-                                {
-                                    @item.OwnerUser.FullName
-                                }
-                            </td>
-                            <td>
-                                @if (@item.DeveloperUser != null)
-                                {
-                                    @item.DeveloperUser.FullName
-                                }
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.Project.Name
+                                </td>
+                                <td>
+                                    @item.TicketType.Name
+                                </td>
+                                <td>
+                                    @item.TicketStatus.Name
+                                </td>
+                                <td>
+                                    @if (item.OwnerUser != null)
+                                    {
+                                        @item.OwnerUser.FullName
+                                    }
+                                </td>
+                                <td>
+                                    @if (@item.DeveloperUser != null)
+                                    {
+                                        @item.DeveloperUser.FullName
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -531,37 +607,37 @@
                     <tbody>
                         @foreach (var item in ViewBag.ListLow)
                         {
-                        <tr>
-                            <td>
-                                @item.Title
-                            </td>
-                            <td>
-                                @item.Project.Name
-                            </td>
-                            <td>
-                                @item.TicketType.Name
-                            </td>
-                            <td>
-                                @item.TicketStatus.Name
-                            </td>
-                            <td>
-                                @if (item.OwnerUser != null)
-                                {
-                                    @item.OwnerUser.FullName
-                                }
-                            </td>
-                            <td>
-                                @if (@item.DeveloperUser != null)
-                                {
-                                    @item.DeveloperUser.FullName
-                                }
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.Project.Name
+                                </td>
+                                <td>
+                                    @item.TicketType.Name
+                                </td>
+                                <td>
+                                    @item.TicketStatus.Name
+                                </td>
+                                <td>
+                                    @if (item.OwnerUser != null)
+                                    {
+                                        @item.OwnerUser.FullName
+                                    }
+                                </td>
+                                <td>
+                                    @if (@item.DeveloperUser != null)
+                                    {
+                                        @item.DeveloperUser.FullName
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -611,37 +687,37 @@
                     <tbody>
                         @foreach (var item in ViewBag.ListHold)
                         {
-                        <tr>
-                            <td>
-                                @item.Title
-                            </td>
-                            <td>
-                                @item.Project.Name
-                            </td>
-                            <td>
-                                @item.TicketType.Name
-                            </td>
-                            <td>
-                                @item.TicketStatus.Name
-                            </td>
-                            <td>
-                                @if (item.OwnerUser != null)
-                                {
-                                    @item.OwnerUser.FullName
-                                }
-                            </td>
-                            <td>
-                                @if (@item.DeveloperUser != null)
-                                {
-                                    @item.DeveloperUser.FullName
-                                }
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.Project.Name
+                                </td>
+                                <td>
+                                    @item.TicketType.Name
+                                </td>
+                                <td>
+                                    @item.TicketStatus.Name
+                                </td>
+                                <td>
+                                    @if (item.OwnerUser != null)
+                                    {
+                                        @item.OwnerUser.FullName
+                                    }
+                                </td>
+                                <td>
+                                    @if (@item.DeveloperUser != null)
+                                    {
+                                        @item.DeveloperUser.FullName
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>

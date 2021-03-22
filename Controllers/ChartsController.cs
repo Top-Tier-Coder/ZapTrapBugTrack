@@ -50,7 +50,7 @@ namespace ZapTrapBugTrack.Controllers
                         result.BackgroundColors.Add("#FF4500");
                         break;
                     case "Urgent":
-                        result.BackgroundColors.Add("#FFD700");
+                        result.BackgroundColors.Add("#FFA500");
                         break;
                     case "High":
                         result.BackgroundColors.Add("#FFD700");
@@ -68,15 +68,15 @@ namespace ZapTrapBugTrack.Controllers
                         break;
 
                 }
-                if (count < 10)
-                {
-                    result.BackgroundColors.Add(_backgroundColors[count]);
-                }
-                else
-                {
-                    result.BackgroundColors.Add(_backgroundColors[count % 10]);
-                }
-                count++;
+                //if (count < 10)
+                //{
+                //    result.BackgroundColors.Add(_backgroundColors[count]);
+                //}
+                //else
+                //{
+                //    result.BackgroundColors.Add(_backgroundColors[count % 10]);
+                //}
+                //count++;
             }
 
             return Json(result);
