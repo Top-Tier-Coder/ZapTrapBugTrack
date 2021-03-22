@@ -179,12 +179,12 @@ namespace ZapTrapBugTrack.Models
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,OwnerUserId,DeveloperUserId")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,DeveloperUserId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
-                ticket.Updated = DateTime.Now;
                 ticket.Created = DateTime.Now;
+                ticket.OwnerUserId = _userManager.GetUserId(User);
 
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
