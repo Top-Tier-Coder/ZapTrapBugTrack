@@ -619,10 +619,12 @@ public static class DataUtility
         try
         {
             IList<TicketPriority> ticketPriorities = new List<TicketPriority>() {
+                                                    new TicketPriority() { Name = "Hold" },
                                                     new TicketPriority() { Name = "Low" },
                                                     new TicketPriority() { Name = "Medium" },
                                                     new TicketPriority() { Name = "High" },
                                                     new TicketPriority() { Name = "Urgent" },
+                                                    new TicketPriority() { Name = "Critical" },
                 };
 
             var dbTicketPriorities = context.TicketPriorities.Select(c => c.Name).ToList();
