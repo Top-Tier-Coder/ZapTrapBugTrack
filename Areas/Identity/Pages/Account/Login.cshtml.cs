@@ -26,7 +26,7 @@ namespace ZapTrapBugTrack.Areas.Identity.Pages.Account
 
         public LoginModel(SignInManager<BTUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<BTUser> userManager, 
+            UserManager<BTUser> userManager,
             IConfiguration configuration)
         {
             _userManager = userManager;
@@ -78,7 +78,7 @@ namespace ZapTrapBugTrack.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null, string demoEmail = null)
         {
-            returnUrl ??= Url.Content("~/");
+            //returnUrl ??= Url.Content("~/");
             //demoEmail is null by default this code only triggers on a demo login
             if (!string.IsNullOrWhiteSpace(demoEmail))
             {
@@ -93,19 +93,30 @@ namespace ZapTrapBugTrack.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in");
-                    return LocalRedirect(returnUrl);
+                    //If returnUrl = /Tickets/Create LocalRedirect will add that to the end of the base URL
+                    //IE dansbugtracker.com/Tickets/Create
+                    //If returnUrl is null LocalRedirect uses the default route value
+                    //As is that will create a loop between login and landing page
+                    if (returnUrl is not null)
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Dashboard", "Home");
+                    }
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt.");
                     return Page();
                 }
-                    
-           
+
+
             }
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -114,7 +125,14 @@ namespace ZapTrapBugTrack.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    if (returnUrl is not null)
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Dashboard", "Home");
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {

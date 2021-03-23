@@ -30,7 +30,13 @@ namespace ZapTrapBugTrack.Controllers
             _context = context;
         }
 
-        public IActionResult Index(string filter)
+        [AllowAnonymous]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Dashboard(string filter)
         {
             var Critical = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Critical").Id)).ToList().Count;
             var Urgent = _context.Tickets.Where(t => t.TicketPriorityId == (_context.TicketPriorities.FirstOrDefault(t => t.Name == "Urgent").Id)).ToList().Count;
