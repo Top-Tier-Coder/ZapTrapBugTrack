@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -132,6 +133,7 @@ namespace ZapTrapBugTrack.Models
             return View(ticketComment);
         }
 
+        [Authorize(Roles = "Admin,ProjectManager")]
         // GET: TicketComments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -158,14 +160,16 @@ namespace ZapTrapBugTrack.Models
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ticketComment = await _context.TicketComments.FindAsync(id);
+            var ticketId = ticketComment.TicketId;
             _context.TicketComments.Remove(ticketComment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),"Tickets",new {id = ticketId});
         }
 
         private bool TicketCommentExists(int id)
         {
             return _context.TicketComments.Any(e => e.Id == id);
         }
+
     }
 }
