@@ -31,9 +31,17 @@ namespace ZapTrapBugTrack.Models
         [DataType(DataType.Upload)]
         [MaxFileSize(2 * 1024 * 1024)]
         [AllowedExtensions(new string[] { ".jpg", ".png", "doc", "docx", "xls", "xlsx", "pdf"})]
+
+        
         public IFormFile ImageFormFile { get; set; }
+
+        [Display(Name = "Image File Name")]
         public string ImageFileName { get; set; }
+
+        [Display(Name = "Image File Data")]
         public byte[] ImageFileData { get; set; }
+
+
         public int? CompanyId { get; set; }
 
 

@@ -110,9 +110,8 @@
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
+                       
+                       
                     </div>
                 </div>
                 <div class="card-body">
@@ -137,36 +136,147 @@
         </div>
     </div>
     <!-- /.row -->
-    <div class="card card-cyan">
+    <div class="card card-cyan collapsed-card">
         <div class="card-header">
-            <h3 class="card-title">All Projects</h3>
+            <h3 class="card-title">Projects Quick-View</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                 </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                </button>
+               
             </div>
         </div>
         <div class="card-body">
-
+            <table id="example1" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th> Name</th>
+                        <th> Company</th>
+                        <th> Description</th>
+                        <th> ImageFileName</th>
+                        <th> ImageFileData</th>
+                        <th> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Projects)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Company.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ImageFileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ImageFileData)
+                            </td>
+                            <td>
+                                <a class="btn btn-warning mb-2" asp-action="Edit" asp-route-id="@item.Id">Editing</a>
+                                <a class="btn btn-info mb-2" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                <a class="btn btn-danger mb-2" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="card card-purple">
+    <div class="card card-purple collapsed-card">
         <div class="card-header">
-            <h3 class="card-title">All Tickets</h3>
+            <h3 class="card-title">Tickets Quick-View</h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                 </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                </button>
             </div>
         </div>
         <div class="card-body">
-
+            <table class="table" id="example1">
+                <thead>
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                          Description
+                        </th>
+                        <th>
+                            Created
+                        </th>
+                        <th>
+                            Updated
+                        </th>
+                        <th>
+                           Project
+                        </th>
+                        <th>
+                           TicketType
+                        </th>
+                        <th>
+                            TicketPriority
+                        </th>
+                        <th>
+                            TicketStatus
+                        </th>
+                        <th>
+                           OwnerUser
+                        </th>
+                        <th>
+                            DeveloperUser
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Tickets)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Created)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Updated)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Project.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketType.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OwnerUser.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
+                            </td>
+                            <td>
+                                <a class="btn btn-warning mb-2" asp-action="Edit" asp-route-id="@item.Id">Editing</a>
+                                <a class="btn btn-info mb-2" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                <a class="btn btn-danger mb-2" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
 </section>
 
@@ -178,7 +288,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Critical Ticket Details</h4>
+                <h4 class="modal-title">Critical Ticket Quick-View</h4>
             </div>
             <div class="modal-body bg-dark">
 
@@ -280,7 +390,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Critical Ticket Details</h4>
+                <h4 class="modal-title">Urgent Ticket Quick-View</h4>
             </div>
             <div class="modal-body bg-dark">
 
@@ -384,7 +494,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Critical Ticket Details</h4>
+                <h4 class="modal-title">High Ticket Quick-View</h4>
             </div>
             <div class="modal-body bg-dark">
 
@@ -485,7 +595,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Critical Ticket Details</h4>
+                <h4 class="modal-title">Medium Ticket Quick-View</h4>
             </div>
             <div class="modal-body bg-dark">
 
@@ -586,7 +696,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Critical Ticket Details</h4>
+                <h4 class="modal-title">Low Ticket Quick-View</h4>
             </div>
             <div class="modal-body bg-dark">
 
@@ -687,7 +797,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Critical Ticket Details</h4>
+                <h4 class="modal-title">Hold Ticket Quick-View</h4>
             </div>
             <div class="modal-body bg-dark">
 

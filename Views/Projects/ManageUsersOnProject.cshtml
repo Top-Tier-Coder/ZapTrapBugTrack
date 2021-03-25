@@ -4,9 +4,12 @@
 @{
 }
 
-<div class="card">
-    <div class="card-body bg-info">
+<div class="card card-info">
+    <div class="card-header ">
         <h4 class="card-title">User Management</h4>
+    </div>
+    <div class="card-body">
+        
         <form asp-action="ManageUsersOnProject" method="post">
             <div class="row">
                 <div class="col">
@@ -15,6 +18,7 @@
                         <select name="projectId" class="form-control" asp-items="@ViewBag.ProjectId"></select>
                     </div>
                 </div>
+
                 <div class="col">
                     <div class="form-group">
                         <label class="control-label h5">Choose one project manager</label>
@@ -22,8 +26,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <div class="row">
                 <div class="col">
@@ -40,14 +42,12 @@
                 </div>
             </div>
 
-
-
             <div class="row mt-2">
                 <div class="col-4 offset-2">
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
                 <div class="col-4 offset-2">
-                    <a asp-action="ManageRoles" class="btn btn-danger">Cancel</a>
+                    <a asp-action="ManageRoles" class="btn btn-danger">Cancel Changes</a>
                 </div>
             </div>
         </form>

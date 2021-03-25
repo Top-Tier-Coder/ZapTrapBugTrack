@@ -93,7 +93,7 @@
                     <div class="card-body">
                         <p class="login-box-msg">Sign in to start your session</p>
 
-                        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <form method="post">
                             <div asp-validation-summary="All" class="text-danger"></div>
 
 
@@ -142,10 +142,10 @@
                         <p class="mb-1">
                             <a asp-page="/Account/ForgotPassword">I forgot my password</a>
                         </p>
-                        <p class="mb-0">
+                        @*<p class="mb-0">
                             <a asp-page="/Account/register" class="text-center">Register a new membership</a>
-                        </p>
-
+                        </p>*@
+                  
                         <hr />
                         <div class="row text-center">
                             <div class="col text-center">

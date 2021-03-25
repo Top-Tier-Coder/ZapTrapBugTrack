@@ -78,7 +78,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a asp-controller="Home" asp-action="index" class="nav-link">Home</a>
+                    <a asp-controller="Home" asp-action="dashboard" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://danomalley.netlify.app/" target="_blank"><span class="iconify" data-icon="dashicons:portfolio" data-inline="true"></span>Portfolio</a>
@@ -95,7 +95,7 @@
             </ul>
 
             <!-- SEARCH FORM -->
-            <form class="form-inline ml-3">
+            <!--<form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
@@ -104,7 +104,7 @@
                         </button>
                     </div>
                 </div>
-            </form>
+            </form>-->
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -156,7 +156,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
+            <a asp-controller="Home" asp-action="Dashboard" class="brand-link">
                 <img src="~/img/ZapTrapLargerLogo.png" alt="AdminLTE Logo" class="embed-responsive">
                 <span class="brand-text font-weight-light"></span>
             </a>
@@ -179,16 +179,16 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-                        with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open">
-                            <a asp-controller="home" asp-action="index" class="nav-link">
+                         with font-awesome or any other icon font library -->
+                        <li class="nav-item menu-open mb-4">
+                            <a asp-controller="home" asp-action="dashboard" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
+                        <li class="nav-item menu-open mb-4">
                             <a asp-controller="Companies" asp-action="index" class="nav-link">
                                 <i class=" nav-icon fas fa-building"></i>
                                 <p>
@@ -196,7 +196,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
+                        <li class="nav-item menu-open mb-4">
                             <a asp-controller="Projects" asp-action="index" class="nav-link">
                                 <i class="nav-icon fas fa-hammer"></i>
                                 <p>
@@ -204,15 +204,15 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
+                        <li class="nav-item menu-open mb-4">
                             <a asp-controller="Tickets" asp-action="index" class="nav-link">
-                                <i class="nav-icon fas fa-bug"></i>
+                                <i class="nav-icon fas fa-ticket-alt"></i>
                                 <p>
                                     Tickets
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
+                        <li class="nav-item menu-open mb-4">
                             <a asp-controller="Home" asp-action="ManageRoles" class="nav-link">
                                 <i class="nav-icon fas fa-bullseye"></i>
                                 <p>
@@ -220,11 +220,19 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
+                        <li class="nav-item menu-open mb-4">
                             <a asp-controller="Projects" asp-action="ManageUsersOnProject" class="nav-link">
                                 <i class="nav-icon fas fa-clipboard"></i>
                                 <p>
                                     Project User Manager
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item menu-open mb-4">
+                            <a asp-controller="Tickets" asp-action="Create" class="nav-link">
+                                <i class="nav-icon fas fa-bug"></i>
+                                <p>
+                                    New Bug Ticket
                                 </p>
                             </a>
                         </li>
@@ -350,7 +358,7 @@
                 maintainAspectRatio: false,
                 responsive: true,
             }
-            //Create pie or douhnut chart
+            //Create pie or doughnut chart
             // You can switch between pie and douhnut using the method below.
             var donutChart = new Chart(typeChartCanvas, {
                 type: 'doughnut',

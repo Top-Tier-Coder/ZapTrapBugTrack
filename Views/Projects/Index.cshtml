@@ -4,38 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Project Index</h1>
+<h1</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-
-            </th>
-            <th>
 
 
-            </th>
-            <th>
-
-            </th>
-            <th>
-
-            </th>
-            <th>
-
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-
-</table>
-
-
-@* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> *@
 
 
 
@@ -48,7 +23,8 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                            <h2 class="card-title">Project Index</h2>
+                            <a class="btn btn-info float-right " asp-action="Create">Create New</a>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -57,7 +33,7 @@
                                     <tr>
                                         <th> @Html.DisplayNameFor(model => model.Name)</th>
                                         <th> @Html.DisplayNameFor(model => model.Company)</th>
-                                        <th>  @Html.DisplayNameFor(model => model.Description)</th>
+                                        <th> @Html.DisplayNameFor(model => model.Description)</th>
                                         <th> @Html.DisplayNameFor(model => model.ImageFileName)</th>
                                         <th> @Html.DisplayNameFor(model => model.ImageFileData)</th>
                                         <th>Actions</th>
@@ -83,9 +59,9 @@
                                                 @Html.DisplayFor(modelItem => item.ImageFileData)
                                             </td>
                                             <td>
-                                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                <a class="btn btn-warning mb-2" asp-action="Edit" asp-route-id="@item.Id">Editing</a> 
+                                                <a class="btn btn-info mb-2" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                                                <a class="btn btn-danger mb-2" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                                             </td>
                                         </tr>
                                     }
@@ -118,63 +94,3 @@
 
 
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Company Index</h3>
-
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        @*<input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
-
-                            </div>*@
-                    </div>
-                    <p>
-                        <a asp-action="Create" class="btn btn-info float-left">Create New Company</a>
-                    </p>
-                </div>
-
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                    <thead>
-                        <tr>
-                            <th> @Html.DisplayNameFor(model => model.Name)</th>
-                            <th> @Html.DisplayNameFor(model => model.Description)</th>
-                            @*<th>Total Projects</th>
-                                <th>Open Tickets</th>*@
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>
-</div>
-<!-- /.row -->

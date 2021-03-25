@@ -104,11 +104,6 @@ namespace ZapTrapBugTrack.Controllers
 
 
 
-            return View();
-        }
-
-        public IActionResult Dashboard()
-        {
             DashboardViewModel model = new DashboardViewModel();
 
 
@@ -127,8 +122,30 @@ namespace ZapTrapBugTrack.Controllers
             model.Projects = projects;
 
             return View(model);
-
         }
+
+        //public IActionResult Dashboard()
+        //{
+        //    DashboardViewModel model = new DashboardViewModel();
+
+
+        //    var tickets = _context.Tickets
+        //        .Include(t => t.TicketStatus)
+        //        .Include(t => t.TicketPriority)
+        //        .ToList();
+
+        //    var projects = _context.Projects
+        //        .Include(p => p.Company)
+        //        .Include(p => p.Members)
+        //        .ToList();
+
+
+        //    model.Tickets = tickets;
+        //    model.Projects = projects;
+
+        //    return View(model);
+
+        //}
 
         public IActionResult Privacy()
         {
