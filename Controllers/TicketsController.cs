@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ZapTrapBugTrack.Data;
+using ZapTrapBugTrack.Data.Enums;
 using ZapTrapBugTrack.Services;
+
+
+
 
 namespace ZapTrapBugTrack.Models
 {
@@ -18,11 +23,14 @@ namespace ZapTrapBugTrack.Models
         private readonly IBTHistoryService _historyService;
         private readonly IBTProjectService _projectService;
         private readonly SignInManager<BTUser> _signInManager;
+        private readonly IBTRoleService _roleService;
 
         public TicketsController(ApplicationDbContext context, 
             UserManager<BTUser> userManager, 
             IBTHistoryService historyService, 
-            IBTProjectService projectService, SignInManager<BTUser> signInManager)
+            IBTProjectService projectService, 
+            SignInManager<BTUser> signInManager,
+            IBTRoleService roleService)
             
         {
             _context = context;
@@ -30,6 +38,7 @@ namespace ZapTrapBugTrack.Models
             _historyService = historyService;
             _projectService = projectService;
             _signInManager = signInManager;
+            _roleService = roleService;
         }
 
         public async Task<IActionResult> AcceptInvite(string userId, string code)
@@ -162,6 +171,7 @@ namespace ZapTrapBugTrack.Models
             return View(ticket);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Tickets/Create
         public IActionResult Create()
         {
@@ -177,26 +187,56 @@ namespace ZapTrapBugTrack.Models
         // POST: Tickets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,Created,Updated,ProjectId,TicketTypeId,TicketPriorityId,TicketStatusId,DeveloperUserId")] Ticket ticket)
         {
-            if (ModelState.IsValid)
-            {
-                ticket.Created = DateTime.Now;
-                ticket.OwnerUserId = _userManager.GetUserId(User);
+            //If logged in as demo-user, no database alteration permitted. Return warning view
 
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            if (!(await _roleService.IsUserInRoleAsync(await _userManager.GetUserAsync(User), Roles.DemoUser.ToString())))
+            {
+
+                if (ModelState.IsValid)
+                {
+                    ticket.Created = DateTime.Now;
+                    ticket.OwnerUserId = _userManager.GetUserId(User);
+
+                    _context.Add(ticket);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var currentStatus = _context.TicketStatuses.FirstOrDefault(t => t.Name == "Closed").Id;
+
+
+                if (ticket.DeveloperUserId != null && ticket.TicketStatusId != currentStatus)
+                {
+                    Notification notification = new Notification
+                    {
+                        TicketId = ticket.Id,
+                        Description = "You have a new ticket.",
+                        Created = DateTime.Now,
+                        SenderId = ticket.OwnerUserId,
+                        RecipientId = ticket.DeveloperUserId,
+                    };
+                    await _context.Notifications.AddAsync(notification);
+                    await _context.SaveChangesAsync();
+                }
+
+
+                ViewData["DeveloperUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id", ticket.DeveloperUserId);
+                ViewData["OwnerUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id", ticket.OwnerUserId);
+                ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", ticket.ProjectId);
+                ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
+                ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
+                ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
+                return View(ticket);
             }
-            ViewData["DeveloperUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id", ticket.DeveloperUserId);
-            ViewData["OwnerUserId"] = new SelectList(_context.Set<BTUser>(), "Id", "Id", ticket.OwnerUserId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Name", ticket.ProjectId);
-            ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Id", ticket.TicketPriorityId);
-            ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id", ticket.TicketStatusId);
-            ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Id", ticket.TicketTypeId);
-            return View(ticket);
+
+            return RedirectToAction("DemoUser", "Projects");
+
         }
 
         // GET: Tickets/Edit/5
@@ -252,6 +292,25 @@ namespace ZapTrapBugTrack.Models
 
                     _context.Update(ticket);
                     await _context.SaveChangesAsync();
+
+                    var currentStatus = _context.TicketStatuses.FirstOrDefault(t => t.Name == "Closed").Id;
+
+
+                    if (ticket.DeveloperUserId != null && ticket.TicketStatusId != currentStatus)
+                    {
+                        Notification notification = new Notification
+                        {
+                            TicketId = ticket.Id,
+                            Description = "One of your tickets has been modified!",
+                            Created = DateTime.Now,
+                            SenderId = _userManager.GetUserId(User),
+                            RecipientId = ticket.DeveloperUserId,
+                        };
+
+                        await _context.Notifications.AddAsync(notification);
+                        await _context.SaveChangesAsync();
+                    }
+
 
                     //Add History 
                     //GetUserId

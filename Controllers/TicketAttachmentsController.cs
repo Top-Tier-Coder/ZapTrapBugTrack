@@ -80,7 +80,28 @@ namespace ZapTrapBugTrack.Models
 
                 _context.Add(ticketAttachment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                var ticket = await _context.Tickets.FindAsync(ticketAttachment.TicketId);
+
+                var currentStatus = _context.TicketStatuses.FirstOrDefault(t => t.Name == "Closed").Id;
+
+
+                if (ticket.DeveloperUserId != null && ticket.TicketStatusId != currentStatus)
+                {
+                    Notification notification = new Notification
+                    {
+                        TicketId = ticket.Id,
+                        Description = "You have a new attachment.",
+                        Created = DateTime.Now,
+                        SenderId = ticket.OwnerUserId,
+                        RecipientId = ticket.DeveloperUserId,
+                    };
+
+                    await _context.Notifications.AddAsync(notification);
+                    await _context.SaveChangesAsync();
+                }
+
+                return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
             }
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", ticketAttachment.TicketId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketAttachment.UserId);

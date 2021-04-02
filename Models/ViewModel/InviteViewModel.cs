@@ -55,8 +55,6 @@ namespace ZapTrapBugTrack.Models.ViewModel
         [Display(Name = "Company Description")]
         public string CompanyDescription { get; set; }
 
-
-
     }
 }
  

@@ -50,16 +50,16 @@ namespace ZapTrapBugTrack.Controllers
                         result.BackgroundColors.Add("#FF4500");
                         break;
                     case "Urgent":
-                        result.BackgroundColors.Add("#FFA500");
+                        result.BackgroundColors.Add("#FF8C00");
                         break;
                     case "High":
-                        result.BackgroundColors.Add("#FFD700");
+                        result.BackgroundColors.Add("#FFCA08");
                         break;
                     case "Medium":
-                        result.BackgroundColors.Add("#32CD32");
+                        result.BackgroundColors.Add("#01970E");
                         break;
                     case "Low":
-                        result.BackgroundColors.Add("#00CED1");
+                        result.BackgroundColors.Add("#008EAD");
                         break;
                     case "Hold":
                         result.BackgroundColors.Add("#0000FF");

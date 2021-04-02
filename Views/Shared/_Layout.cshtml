@@ -179,7 +179,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
+     with font-awesome or any other icon font library -->
                         <li class="nav-item menu-open mb-4">
                             <a asp-controller="home" asp-action="dashboard" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -236,6 +236,21 @@
                                 </p>
                             </a>
                         </li>
+                        @if (User.IsInRole("Admin") && !User.IsInRole("DemoUser"))
+                        {
+
+
+                        <li class="nav-item menu-open mb-4">
+                            <a asp-controller="Invites" asp-action="Create" class="nav-link">
+                                <i class="nav-icon fas fa-envelope"></i>
+                                <p>
+                                    Invite New User
+                                </p>
+                            </a>
+                        </li>
+
+                        }
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -359,7 +374,7 @@
                 responsive: true,
             }
             //Create pie or doughnut chart
-            // You can switch between pie and douhnut using the method below.
+            // You can switch between pie and doughnut using the method below.
             var donutChart = new Chart(typeChartCanvas, {
                 type: 'doughnut',
                 data: donutData,
@@ -382,8 +397,8 @@
                 maintainAspectRatio: false,
                 responsive: true,
             }
-            //Create pie or douhnut chart
-            // You can switch between pie and douhnut using the method below.
+            //Create pie or doughnut chart
+            // You can switch between pie and doughnut using the method below.
             var donutChart = new Chart(priorityChartCanvas, {
                 type: 'doughnut',
                 data: donutData,

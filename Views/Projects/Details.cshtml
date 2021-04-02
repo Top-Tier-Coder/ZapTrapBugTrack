@@ -1,6 +1,7 @@
 ﻿@model ZapTrapBugTrack.Models.Project
 @using ZapTrapBugTrack.Services
 @inject IBTProjectService projectService
+@inject IBTRoleService roleService
 @{
     ViewData["Title"] = "Details";
 }
@@ -29,6 +30,13 @@
                     @foreach (var user in Model.Members)
                     {
                         <p>@user.FullName</p>
+
+                        <p>
+                            @foreach (var role in (await roleService.ListUserRolesAsync(user)))
+                            {
+                                <p>@role</p>
+                            }
+                        </p>
                     }
                 </dd>
                 <dt class="col-lg-5">@Html.DisplayNameFor(model => model.ImageFileName)</dt>

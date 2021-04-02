@@ -70,6 +70,28 @@ namespace ZapTrapBugTrack.Models
                 ticketComment.Created = DateTimeOffset.Now;
                 _context.Add(ticketComment);
                 await _context.SaveChangesAsync();
+
+                var currentStatus = _context.TicketStatuses.FirstOrDefault(t => t.Name == "Closed").Id;
+
+                var ticket = await _context.Tickets.FindAsync(ticketComment.TicketId);
+
+
+                if (ticket.DeveloperUserId != null && ticket.TicketStatusId != currentStatus)
+                {
+                    Notification notification = new Notification
+                    {
+                        TicketId = ticket.Id,
+                        Description = "You have a new comment",
+                        Created = DateTime.Now,
+                        SenderId = ticket.OwnerUserId,
+                        RecipientId = ticket.DeveloperUserId,
+                    };
+
+                    await _context.Notifications.AddAsync(notification);
+                    await _context.SaveChangesAsync();
+                }
+
+
                 return RedirectToAction("Details", "Tickets", new {id =  ticketComment.TicketId });
             }
 

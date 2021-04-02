@@ -40,11 +40,16 @@ namespace ZapTrapBugTrack.Services
                 if(!await IsUserOnProjectAsync(userId, projectId)) 
                 {
                      BTUser user = await _userManager.FindByIdAsync(userId);
-                    
+
                     if (await _roleService.IsUserInRoleAsync(user, Roles.ProjectManager.ToString()))
                     {
                         var oldManager = await ProjectManagerOnProjectAsync(projectId);
-                        await RemoveUserFromProject(oldManager.Id, projectId);
+
+                        if (oldManager != null)
+                        {
+                            await RemoveUserFromProjectAsync(oldManager.Id, projectId);
+                        }
+
                     }
                     Project project = await _context.Projects.FindAsync(projectId);
 
@@ -106,7 +111,7 @@ namespace ZapTrapBugTrack.Services
             return projectManager;
         }
 
-        public async Task RemoveUserFromProject(string userId, int projectId)
+        public async Task RemoveUserFromProjectAsync(string userId, int projectId)
         {
             try
             {

@@ -28,7 +28,14 @@ namespace ZapTrapBugTrack.Models
             _projectService = projectService;
             _roleService = roleService;
         }
-       
+
+        public IActionResult DemoUser()
+        {
+            return View();
+        }
+
+        //GET: UsersOnProject
+
         public async Task<IActionResult> ManageUsersOnProject()
         {
             ViewData["ProjectId"] = new SelectList(_context.Set<Project>(), "Id", "Name");
@@ -38,9 +45,34 @@ namespace ZapTrapBugTrack.Models
 
             return View();
         }
-  
-        
-        // GET: Projects
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageUsersOnProject(int projectId, string projectManagerId, List<string> developerIds, List<string> submitterIds)
+        {
+            var currentlyOnProject = await _projectService.UsersOnProjectAsync(projectId);
+
+            foreach (var user in currentlyOnProject)
+            {
+                await _projectService.RemoveUserFromProjectAsync(user.Id, projectId);
+            }
+
+            await _projectService.AddUserToProjectAsync(projectManagerId, projectId);
+
+            foreach (var userId in developerIds)
+            {
+                await _projectService.AddUserToProjectAsync(userId, projectId);
+            }
+
+            foreach (var userId in submitterIds)
+            {
+                await _projectService.AddUserToProjectAsync(userId, projectId);
+            }
+            return RedirectToAction();
+        }
+
+
+        // GET: Projects Index
 
         public async Task<IActionResult> Index()
         {
@@ -58,9 +90,12 @@ namespace ZapTrapBugTrack.Models
 
             var project = await _context.Projects
                 .Include(p => p.Company)
-                //.Include(p => p.ProjectUsers)
-                //.ThenInclude(p => p.User)
+                .Include(p => p.Tickets )
+                .ThenInclude(p => p.DeveloperUser)
+                .Include(p => p.Members)
                 .FirstOrDefaultAsync(m => m.Id == id);
+   
+         
 
             if (project == null)
             {
@@ -91,6 +126,7 @@ namespace ZapTrapBugTrack.Models
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CompanyId"] = new SelectList(_context.Set<Company>(), "Id", "Id", project.CompanyId);
             return View(project);
         }

@@ -21,7 +21,7 @@ namespace ZapTrapBugTrack.Services
         public Task AddUserToProjectAsync(string userId, int projectId);
 
         //Remove from project
-        public Task RemoveUserFromProject(string userId, int projectId);
+        public Task RemoveUserFromProjectAsync(string userId, int projectId);
 
         //All projects for one user
         public Task<ICollection<Project>> ListUserProjectsAsync(string userId);
