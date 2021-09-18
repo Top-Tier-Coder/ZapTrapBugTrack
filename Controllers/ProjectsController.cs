@@ -11,7 +11,7 @@ using ZapTrapBugTrack.Data.Enums;
 using ZapTrapBugTrack.Services;
 
 namespace ZapTrapBugTrack.Models
-{ //this is a comment
+{ //this is a comment and this is too
     
     public class ProjectsController : Controller
     {
