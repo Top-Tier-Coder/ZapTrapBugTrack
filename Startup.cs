@@ -33,7 +33,8 @@ namespace ZapTrapBugTrack
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
-                  DataUtility.GetConnectionString(Configuration)));
+                  DataUtility.GetConnectionString(Configuration),
+                    o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
 
             //services.AddDbContext<ApplicationDbContext>(options =>
